@@ -24,30 +24,32 @@
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics
                 localizedReason:@"Are you the device owner?"
                           reply:^(BOOL success, NSError *error) {
-            if(error){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"There was a problem verifying your identity."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-                [alert show];
-                return;
-            }
-            if(success){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                message:@"You are the device owner!"
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-                [alert show];
-            } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"You are not the device owner."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-                [alert show];
-            }
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  if(error){
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                      message:@"There was a problem verifying your identity."
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                      return;
+                                  }
+                                  if(success){
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                                      message:@"You are the device owner!"
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                  } else {
+                                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                      message:@"You are not the device owner."
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"Ok"
+                                                                            otherButtonTitles:nil];
+                                      [alert show];
+                                  }
+                              });
         }];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
